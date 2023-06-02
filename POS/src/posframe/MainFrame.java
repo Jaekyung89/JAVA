@@ -2,6 +2,7 @@ package posframe;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -31,7 +32,7 @@ public class MainFrame extends JFrame {
         JPanel p1 = new JPanel();
         p1.setBackground(Color.black);
         p1.setLayout(new FlowLayout());
-        p1.setBounds(0, 0, 1200, 50);
+        p1.setBounds(0, 0, 1200, 30);
         
         JTextField tf1 = new JTextField("편의점 셀프 포스");
         tf1.setSelectedTextColor(Color.white);
@@ -45,6 +46,7 @@ public class MainFrame extends JFrame {
         JPanel p2 = new JPanel();
         p2.setBackground(Color.red);
         p2.setBounds(0, 50, 1200, 350);
+        p2.setLayout(new GridLayout());
         add(p2);
     }
 
