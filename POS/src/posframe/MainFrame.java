@@ -1,6 +1,8 @@
 package posframe;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 
@@ -18,7 +20,6 @@ public class MainFrame extends JFrame {
         setLocationRelativeTo(null);
         setResizable(false);
         setLayout(null);
-        
         
         sp1();
         sp2();

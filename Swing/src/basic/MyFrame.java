@@ -10,6 +10,8 @@ public class MyFrame extends JFrame {
 		setLocationRelativeTo(null);
 		setSize(400, 250);
 		setVisible(true);
+		
+		
 	}
 	
 
