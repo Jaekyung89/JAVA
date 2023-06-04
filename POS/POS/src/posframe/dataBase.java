@@ -8,30 +8,29 @@ import java.sql.Statement;
 
 public class dataBase {
 
-	public ResultSet db(String data) {
+	public static void main(String[] args) {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection conn = DriverManager.getConnection(
 					"jdbc:mysql://localhost:3306/selfpos",
-					"root", "1234");
+					"root", "");
 			System.out.println("OK");
 			
 			Statement stmt = conn.createStatement();
 			
 			//DB 읽기 meal 부분 수정하면 됨
-			ResultSet rs = stmt.executeQuery("SELECT * FROM " + data + " ORDER BY ID ASC;");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM meal;");
 			
-//			while(rs.next()) {
-//				String NAME = rs.getString("NAME");
-//				int PRICE = rs.getInt("PRICE");
-//				int STOCK = rs.getInt("STOCK");
-//				System.out.println(NAME);
-//				System.out.println("가격 : " + PRICE);
-//				System.out.println("재고 : " + STOCK);
-//				
-//			}
-
-			return rs;
+			while(rs.next()) {
+				String NAME = rs.getString("NAME");
+				int PRICE = rs.getInt("PRICE");
+				int STOCK = rs.getInt("STOCK");
+				System.out.println(NAME);
+				System.out.println("가격 : " + PRICE);
+				System.out.println("재고 : " + STOCK);
+				
+			}
+			
 		} catch (ClassNotFoundException e) {
 			System.out.println("NO");
 			e.printStackTrace();
@@ -42,7 +41,6 @@ public class dataBase {
 			e.printStackTrace();
 			
 		}
-		return null;
 
 	}
 
