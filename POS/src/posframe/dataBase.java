@@ -11,7 +11,7 @@ public class dataBase {
 	public ResultSet db(String data) {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/selfpos","root", "1234");
+			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/selfpos","root", "@rlaworud809");
 			
 			Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			

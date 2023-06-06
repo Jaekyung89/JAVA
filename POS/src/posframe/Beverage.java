@@ -241,6 +241,31 @@ public class Beverage implements ActionListener {
         return button;
     }
     
+    private JPanel createCart(String info) {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+        panel.setBackground(Color.WHITE);
+        panel.setBorder(new TitledBorder(new RoundedBorder(20, 3, new Color(4, 199, 246))));
+        panel.setPreferredSize(new Dimension(180, 210));
+
+
+        return panel;
+    }
+    
+    public void addItemToCart(String itemInfo) {
+        // 장바구니에 item 추가하는 로직 (구체적인 코드는 프로젝트의 나머지 부분에 따라 다르겠지만, 예를 들어 List<Item> 타입의 장바구니 리스트에 item을 추가하는 코드가 여기에 위치하게 될 것입니다)
+
+        // 새로 추가된 item을 이용하여 패널 생성
+        JPanel panel = createCart(itemInfo);
+        
+        // 생성한 패널을 cartInner에 추가
+        PosMain.getCartInner().add(panel);
+        
+        // UI를 갱신하여 새로 추가된 패널이 보이게 함
+        PosMain.getCartInner().revalidate();
+        PosMain.getCartInner().repaint();
+    }
+    
 	public void actionPerformed(ActionEvent e) {
 		Object obj = e.getSource();
 		
@@ -252,20 +277,28 @@ public class Beverage implements ActionListener {
 		    if (obj == bvgbtn[i]) {
 		        String name = ((JButton) obj).getActionCommand();  // 버튼의 이름 얻기
 		        cart item = new cart(name, 1);
-                // 이름이 같은 항목이 이미 list에 있는지 검사합니다.
-                int index = item.search(list, item.getName());
-                if (index != -1) {
-                    // 이름이 같은 항목이 이미 있으면, 그 항목의 수량을 증가시킵니다.
-                    item.add_item(list, index);
-                } else {
-                    // 그렇지 않으면, 새 항목을 list에 추가합니다.
-                    list.add(item);
-                }
+		        // 이름이 같은 항목이 이미 list에 있는지 검사합니다.
+		        int index = item.search(list, item.getName());
+		        if (index != -1) {
+		            // 이름이 같은 항목이 이미 있으면, 그 항목의 수량을 증가시킵니다.
+		            item.add_item(list, index);
+		        } else {
+		            // 그렇지 않으면, 새 항목을 list에 추가합니다.
+		            list.add(item);
+		        }
+		        
+		        // cartInner 패널 초기화
+		        PosMain.getCartInner().removeAll();
+		        // list의 아이템들을 이용하여 패널을 생성하고, 이를 cartInner에 추가
+		        for (cart itemInfo : list) {
+		            JPanel panel = createCart(itemInfo.toString()); // 각 아이템의 정보를 가진 패널 생성
+		            PosMain.getCartInner().add(panel); // 생성한 패널을 cartInner에 추가
+		        }
+		        PosMain.getCartInner().revalidate(); // UI를 갱신하여 새로 추가된 패널들이 보이게 합니다.
+		        PosMain.getCartInner().repaint();
+		        break;
+		    }
+		}
 
-                // 콘솔에 list를 출력합니다.
-                item.print(list);
-                break;
-            }
-        }
     }
 }

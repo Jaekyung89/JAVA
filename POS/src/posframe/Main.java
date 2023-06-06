@@ -1,12 +1,10 @@
 package posframe;
 
 import java.awt.EventQueue;
-import java.awt.Font;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.border.TitledBorder;
 
 
 import java.awt.BorderLayout;
@@ -47,7 +45,6 @@ public class Main implements ActionListener, MouseListener {
 	private JLabel banner2;
 	private JButton purchase;
 	private JButton cancel;
-	private Font font = new Font("맑은 고딕", Font.BOLD, 20);
 	ArrayList<cart> cartlist;
 	cart myCart;
 	private JPanel cartInner;
@@ -79,6 +76,8 @@ public class Main implements ActionListener, MouseListener {
         
 		Mainframe.setVisible(true);
 	}
+
+	
 
 	private void MainPanel() {
 		MainPanel = new JPanel();
@@ -288,7 +287,7 @@ public class Main implements ActionListener, MouseListener {
         p6.add(pc); 
     }
     
-    private JButton createButton(String imagePath) {
+	private JButton createButton(String imagePath) {
         JButton button = new JButton();
         button.setBorder(BorderFactory.createLineBorder(new Color(217, 217, 217)));
         button.setBackground(new Color(217, 217, 217));
@@ -298,26 +297,6 @@ public class Main implements ActionListener, MouseListener {
         button.addActionListener(this);
         return button;
     }
-    
-    private JPanel createCart() {
-    	JPanel panel = new JPanel();
-    	panel.setLayout(new BorderLayout());
-    	panel.setBackground(Color.WHITE);
-    	panel.setBorder(new TitledBorder(new RoundedBorder(20, 3, new Color(4, 199, 246))));
-    	panel.setPreferredSize(new Dimension(180, 210));
-		return panel;
-    }
-    
-    private JLabel createlabel() {
-    	JLabel label = new JLabel("O O O");
-    	label.setFont(font);
-    	
-    	
-		return label;
-    	
-    }
-    
-
 	
 	public void actionPerformed(ActionEvent e) {
 		Object obj = e.getSource();
@@ -389,11 +368,24 @@ public class Main implements ActionListener, MouseListener {
 		this.mp1 = mp1;
 	}
 	
-	public ArrayList<cart> getList() {
+	public ArrayList<cart> getCartlist() {
 		return cartlist;
+	}
+
+	public void setCartlist(ArrayList<cart> cartlist) {
+		this.cartlist = cartlist;
 	}
 
 	public void setList(ArrayList<cart> list) {
 		this.cartlist = list;
 	}
+
+    public JPanel getCartInner() {
+		return cartInner;
+	}
+
+	public void setCartInner(JPanel cartInner) {
+		this.cartInner = cartInner;
+	}
+
 }
