@@ -1,15 +1,21 @@
 package posframe;
 
 import java.awt.EventQueue;
+import java.awt.Font;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.border.TitledBorder;
+
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.GridLayout;
@@ -20,6 +26,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 
 public class Main implements ActionListener, MouseListener {
 
@@ -38,14 +45,18 @@ public class Main implements ActionListener, MouseListener {
 	private JPanel MainPanel;
 	private JLabel banner;
 	private JLabel banner2;
-
-
+	private JButton purchase;
+	private JButton cancel;
+	private Font font = new Font("맑은 고딕", Font.BOLD, 20);
+	ArrayList<cart> cartlist;
+	cart myCart;
+	private JPanel cartInner;
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Main window = new Main("파이팅하세요");
+					Main window = new Main();
 					window.Mainframe.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -54,7 +65,9 @@ public class Main implements ActionListener, MouseListener {
 		});
 	}
 	
-	public Main(String title) {
+	public Main() {
+		cartlist = new ArrayList<cart>();
+		myCart = new cart();
 		Mainframe = new JFrame();
 		Mainframe.setBounds(0, 0, 1200, 950);
 		Mainframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -66,7 +79,7 @@ public class Main implements ActionListener, MouseListener {
         
 		Mainframe.setVisible(true);
 	}
-	
+
 	private void MainPanel() {
 		MainPanel = new JPanel();
 		MainPanel.setLayout(null);
@@ -184,7 +197,7 @@ public class Main implements ActionListener, MouseListener {
         p5.setLayout(null);
         
         banner = new JLabel();
-        banner.setBounds(0, 10, 1185, 200);
+        banner.setBounds(0, 10, 1200, 145);
         ImageIcon imageIcon2 = new ImageIcon("javaImage/banner/banner1.png");
         Image image2 = imageIcon2.getImage();
 
@@ -203,7 +216,7 @@ public class Main implements ActionListener, MouseListener {
         
         
         banner2 = new JLabel();
-        banner2.setBounds(0, 10, 1185, 200);
+        banner2.setBounds(0, 10, 1200, 145);
         ImageIcon imageIcon3 = new ImageIcon("javaImage/banner/banner2.png");
         Image image3 = imageIcon3.getImage();
 
@@ -235,12 +248,44 @@ public class Main implements ActionListener, MouseListener {
         mp1.add(p6);
         p6.setLayout(null);
         
-        JLabel lblNewLabel_1 = new JLabel();
-        lblNewLabel_1.setBounds(0, 0, 1200, 5);
-        lblNewLabel_1.setOpaque(true);
-        lblNewLabel_1.setBackground(new Color(0, 0, 0));
+        JPanel cart = new JPanel();
+        cart.setLayout(new BorderLayout());
         
-        p6.add(lblNewLabel_1);
+        cartInner = new JPanel();
+        cartInner.setLayout(new BoxLayout(cartInner, BoxLayout.X_AXIS));
+        
+        cartInner.setAlignmentX(Component.CENTER_ALIGNMENT);
+        cartInner.setAlignmentY(Component.LEFT_ALIGNMENT);
+        
+        
+        cartInner.setBackground(Color.WHITE);
+        
+        JScrollPane sp = new JScrollPane(cartInner, JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        sp.setBorder(BorderFactory.createEmptyBorder());
+        
+        cart.setBounds(0, 0, 1000, 263);
+        cart.add(sp, BorderLayout.CENTER);
+        
+        
+        
+        p6.add(cart);
+        
+        JPanel pc = new JPanel();
+        pc.setBounds(1000, 0, 200, 230);
+        pc.setLayout(null);
+        pc.setBackground(Color.WHITE);
+        
+        purchase = createButton("icon/purchase.png");
+        purchase.setPreferredSize(new Dimension(190, 120));
+        purchase.setBounds(0, 0, 190, 120);
+        pc.add(purchase);
+        
+        cancel = createButton("icon/cancel.png");
+        cancel.setPreferredSize(new Dimension(190, 120));
+        cancel.setBounds(0, 130, 190, 120);
+        pc.add(cancel);
+        
+        p6.add(pc); 
     }
     
     private JButton createButton(String imagePath) {
@@ -253,6 +298,26 @@ public class Main implements ActionListener, MouseListener {
         button.addActionListener(this);
         return button;
     }
+    
+    private JPanel createCart() {
+    	JPanel panel = new JPanel();
+    	panel.setLayout(new BorderLayout());
+    	panel.setBackground(Color.WHITE);
+    	panel.setBorder(new TitledBorder(new RoundedBorder(20, 3, new Color(4, 199, 246))));
+    	panel.setPreferredSize(new Dimension(180, 210));
+		return panel;
+    }
+    
+    private JLabel createlabel() {
+    	JLabel label = new JLabel("O O O");
+    	label.setFont(font);
+    	
+    	
+		return label;
+    	
+    }
+    
+
 	
 	public void actionPerformed(ActionEvent e) {
 		Object obj = e.getSource();
@@ -307,6 +372,7 @@ public class Main implements ActionListener, MouseListener {
 	    banner.setVisible(true);
 
 	}
+	
 	public JPanel getMainPanel() {
 		return MainPanel;
 	}
@@ -321,5 +387,13 @@ public class Main implements ActionListener, MouseListener {
 
 	public void setMp1(JPanel mp1) {
 		this.mp1 = mp1;
+	}
+	
+	public ArrayList<cart> getList() {
+		return cartlist;
+	}
+
+	public void setList(ArrayList<cart> list) {
+		this.cartlist = list;
 	}
 }

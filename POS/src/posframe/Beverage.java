@@ -2,7 +2,6 @@ package posframe;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 import java.awt.BorderLayout;
@@ -21,17 +20,20 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import javax.swing.SwingConstants;
+import java.util.ArrayList;
 
 public class Beverage implements ActionListener {
 
 	private JFrame beverageframe;
-	private JPanel Breadmp1;
 	private JPanel BeveragePanel;
 	private Main PosMain;
 	private JButton GoHome;
 	private JButton bvgbtn[] = new JButton[10];
 	private Font font = new Font("맑은 고딕", Font.BOLD, 15);
+	private JPanel Beveragemp1;
+	dataBase DB = new dataBase();
+	ResultSet rs;
+	private ArrayList<cart> list = new ArrayList<>();
 	
 	public Beverage(Main PosMain) {
 		beverageframe = new JFrame();
@@ -58,15 +60,15 @@ public class Beverage implements ActionListener {
 		BeveragePanel.setBounds(0, 0, 1200, 950);
         PosMain.getMainPanel().add(BeveragePanel);
         
-        Breadmp1();
+        Beveragemp1();
 		
     }
 
-	private void Breadmp1() {
-		Breadmp1 = new JPanel();
-		Breadmp1.setLayout(null);
-		Breadmp1.setBounds(0, 0, 1200, 950);
-        BeveragePanel.add(Breadmp1);
+	private void Beveragemp1() {
+		Beveragemp1 = new JPanel();
+		Beveragemp1.setLayout(null);
+		Beveragemp1.setBounds(0, 0, 1200, 950);
+        BeveragePanel.add(Beveragemp1);
         
 		sp1();
         sp2();
@@ -80,14 +82,14 @@ public class Beverage implements ActionListener {
         JPanel p1 = new JPanel();
         p1.setBackground(Color.WHITE);
         p1.setBounds(0, 0, 1200, 15);
-        Breadmp1.add(p1);
+        Beveragemp1.add(p1);
     }
 
     private void sp2() {
         JPanel p2 = new JPanel();
         p2.setBackground(Color.white);
         p2.setBounds(0, 15, 1200, 50);
-        Breadmp1.add(p2);
+        Beveragemp1.add(p2);
         p2.setLayout(null);
         
         JLabel lblNewLabel = new JLabel();
@@ -111,14 +113,14 @@ public class Beverage implements ActionListener {
         JPanel p3 = new JPanel();
         p3.setBackground(Color.WHITE);
         p3.setBounds(0, 65, 1200, 15);
-        Breadmp1.add(p3);
+        Beveragemp1.add(p3);
     }
     
     private void sp4() {
         JPanel p4 = new JPanel();
         p4.setBackground(Color.WHITE);
         p4.setBounds(0, 80, 1200, 100);
-        Breadmp1.add(p4);
+        Beveragemp1.add(p4);
         
         GoHome = new JButton(new ImageIcon("icon/Home.png"));
         GoHome.setBounds(12, 25, 155, 50);
@@ -127,7 +129,7 @@ public class Beverage implements ActionListener {
         p4.add(GoHome);
         
         JLabel title = new JLabel(new ImageIcon("icon/BT.png"));
-        title.setHorizontalAlignment(SwingConstants.CENTER);
+        title.setHorizontalAlignment(JLabel.CENTER);
         title.setBounds(300, 20, 600, 60);
         p4.add(title);
         
@@ -135,10 +137,11 @@ public class Beverage implements ActionListener {
 
     private void sp5() {
     	
-    	dataBase DB = new dataBase();
-    	ResultSet rs = DB.db("beverage");
+    	DB = new dataBase();
+        rs = DB.db("beverage");
     	JPanel p5 = new JPanel();
     	JPanel btnpan = new JPanel();
+
     	int i= 0;
     	
     	try {
@@ -146,24 +149,23 @@ public class Beverage implements ActionListener {
 				String NAME = rs.getString("NAME");
 				int PRICE = rs.getInt("PRICE");
 				int STOCK = rs.getInt("STOCK");
-				System.out.println(NAME);
-				System.out.println("가격 : " + PRICE);
-				System.out.println("재고 : " + STOCK);
 				
 		        p5.setBackground(Color.WHITE);
 		        p5.setBounds(0, 180, 1200, 470);
-		        Breadmp1.add(p5);
+		        Beveragemp1.add(p5);
 		        p5.setLayout(new BorderLayout());
 		        
+		        btnpan.setBounds(0, 0, 1200, 450);
 		        btnpan.setBackground(Color.WHITE);
 		        btnpan.setLayout(new GridLayout(2, 5, 30, 10));
+		        btnpan.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
 		        
 		        JPanel bvg = new JPanel();
 		        bvg.setLayout(new BorderLayout());
 		        bvg.setBackground(Color.WHITE);
-		        bvg.setBorder(new TitledBorder(new RoundedBorder(10,3)));
+		        bvg.setBorder(new TitledBorder(new RoundedBorder(10, 3, new Color(4, 199, 246))));
 		        
-		        bvgbtn[i] = createButton("javaImage/beverage/beverage" + (i+1) + ".png");
+		        bvgbtn[i] = createButton("javaImage/beverage/beverage" + (i+1) + ".png", NAME);
 		        
 		        JLabel bvgname = new JLabel(NAME);
 		        bvgname.setHorizontalAlignment(JLabel.CENTER);
@@ -171,7 +173,7 @@ public class Beverage implements ActionListener {
 		        JLabel bvgprice = new JLabel(PRICE + "원");
 		        bvgprice.setHorizontalAlignment(JLabel.CENTER);
 		        bvgprice.setFont(font);
-		        JLabel bvgcount = new JLabel(STOCK + "개");
+		        JLabel bvgcount = new JLabel("재고: " + STOCK + "개");
 		        bvgcount.setHorizontalAlignment(JLabel.CENTER);
 		        bvgcount.setFont(font);
 		        
@@ -188,21 +190,30 @@ public class Beverage implements ActionListener {
 		        
 		        btnpan.add(bvg);
 		        
+		        
 		        i++;
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+    	
+    	JLabel separator = new JLabel();
+    	separator.setBounds(0, 467, 1200, 3);
+    	separator.setPreferredSize(new Dimension(1200, 3));
+    	separator.setOpaque(true);
+    	separator.setBackground(new Color(4, 199, 246));
+        
+        p5.add(separator, BorderLayout.SOUTH);
     	        
         p5.add(btnpan, BorderLayout.CENTER);
         
         JPanel emppanw = new JPanel();
-        emppanw.setPreferredSize(new Dimension(5, 100));
+        emppanw.setPreferredSize(new Dimension(5, 440));
         emppanw.setBackground(Color.WHITE);
         p5.add(emppanw, BorderLayout.WEST);
         
         JPanel emppane = new JPanel();
-        emppane.setPreferredSize(new Dimension(20, 100));
+        emppane.setPreferredSize(new Dimension(20, 440));
         emppane.setBackground(Color.WHITE);
         p5.add(emppane, BorderLayout.EAST);
     	
@@ -212,19 +223,15 @@ public class Beverage implements ActionListener {
         JPanel p6 = new JPanel();
         p6.setBackground(Color.WHITE);
         p6.setBounds(0, 650, 1200, 300);
-        Breadmp1.add(p6);
+        Beveragemp1.add(p6);
         p6.setLayout(null);
         
-        JLabel lblNewLabel_1 = new JLabel();
-        lblNewLabel_1.setBounds(0, 0, 1200, 5);
-        lblNewLabel_1.setOpaque(true);
-        lblNewLabel_1.setBackground(new Color(0, 0, 0));
         
-        p6.add(lblNewLabel_1);
     }
     
-    private JButton createButton(String imagePath) {
+    private JButton createButton(String imagePath, String name) {
         JButton button = new JButton();
+        button.setActionCommand(name);
         button.setBorder(BorderFactory.createLineBorder(new Color(217, 217, 217)));
         button.setBackground(new Color(217, 217, 217));
         button.setBorderPainted(false);
@@ -236,10 +243,29 @@ public class Beverage implements ActionListener {
     
 	public void actionPerformed(ActionEvent e) {
 		Object obj = e.getSource();
+		
 		if (obj == GoHome) {
 			BeveragePanel.setVisible(false);
 			PosMain.getMp1().setVisible(true);
-			
 		}
-	}
+		for (int i = 0; i < bvgbtn.length; i++) {
+		    if (obj == bvgbtn[i]) {
+		        String name = ((JButton) obj).getActionCommand();  // 버튼의 이름 얻기
+		        cart item = new cart(name, 1);
+                // 이름이 같은 항목이 이미 list에 있는지 검사합니다.
+                int index = item.search(list, item.getName());
+                if (index != -1) {
+                    // 이름이 같은 항목이 이미 있으면, 그 항목의 수량을 증가시킵니다.
+                    item.add_item(list, index);
+                } else {
+                    // 그렇지 않으면, 새 항목을 list에 추가합니다.
+                    list.add(item);
+                }
+
+                // 콘솔에 list를 출력합니다.
+                item.print(list);
+                break;
+            }
+        }
+    }
 }

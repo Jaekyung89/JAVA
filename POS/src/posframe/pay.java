@@ -1,19 +1,15 @@
 package posframe;
 
 import java.awt.EventQueue;
+
 import java.awt.FlowLayout;
 import java.awt.Font;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.AbstractBorder;
-import javax.swing.border.LineBorder;
-import javax.swing.border.TitledBorder;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
-import java.awt.Dimension;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -25,7 +21,7 @@ import javax.swing.JLabel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class pay implements ActionListener {
+public class pay extends JFrame implements ActionListener  {
 
    private JFrame frame;
    private JPanel mp1;
@@ -40,6 +36,7 @@ public class pay implements ActionListener {
    private JButton apple;
    private JButton cancel;
    private JPanel panel;
+   
    private int price=0;
 
    /**
@@ -195,7 +192,7 @@ public class pay implements ActionListener {
       p4.setLayout(new GridLayout(2, 1, 5, 10));
       mp1.add(p4);
       
-      JLabel count = new JLabel();
+      JLabel count = new JLabel("총 n개");
       count.setBounds(0, 0, 350, 90);
         ImageIcon imageIcon = new ImageIcon("javaImage/pay/count.png");
         Image image = imageIcon.getImage();
@@ -225,16 +222,6 @@ public class pay implements ActionListener {
 
         p4.add(sum_money);
       
-      //AbstractBorder border = new LineBorder(Color.BLACK, 2);
-      
-      /*
-       * label1 = new JLabel("총 n개", JLabel.CENTER); label1.setFont(new Font("굴림",
-       * Font.PLAIN, 28)); label1.setBorder(border); p4.add(label1);
-       * 
-       * 
-       * label2 = new JLabel("결제 금액 : ", JLabel.CENTER); label2.setFont(new Font("굴림",
-       * Font.PLAIN, 28)); label2.setBorder(border); p4.add(label2);
-       */
    }
    
    private void sp5() {
@@ -366,19 +353,17 @@ public class pay implements ActionListener {
       
       
       if(obj == card) {
-         
+         payLoading();
       }
       if(obj == cash) {
          
       }
       if(obj == samsung) {
-         
+         payLoading();
       }
       if(obj == apple) {
-         
+         payLoading();
       }
-      
-      
       
       if (obj == point) {
          //적립 창 켜기
@@ -388,4 +373,36 @@ public class pay implements ActionListener {
          //초기 화면 되돌아가기
       }
    }
+
+   private void payLoading() {
+      Container c = getContentPane();
+      c.setLayout(new FlowLayout());
+      setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      setSize(500, 350);
+      setLocationRelativeTo(null);
+      
+      JLabel JLtx = new JLabel("결제중입니다.");
+      JLtx.setFont(new Font("고딕", Font.BOLD, 28));
+      ImageIcon imageIcon = new ImageIcon("javaImage/pay/loading.gif");
+      JLabel imgLabel = new JLabel(imageIcon);
+      
+      
+      c.add(JLtx);
+      c.add(imgLabel);
+      
+      
+      
+      setVisible(true);
+   }
+
+
+   public JPanel getPanel() {
+      return panel;
+   }
+
+   public void setPanel(JPanel panel) {
+      this.panel = panel;
+   }
+   
 }
+
