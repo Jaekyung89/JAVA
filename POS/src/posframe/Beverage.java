@@ -241,22 +241,27 @@ public class Beverage implements ActionListener {
         return button;
     }
     
-    private JPanel createCart(String info) {
+    private JPanel createCart(cart item) {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
         panel.setBackground(Color.WHITE);
         panel.setBorder(new TitledBorder(new RoundedBorder(20, 3, new Color(4, 199, 246))));
         panel.setPreferredSize(new Dimension(180, 210));
 
+        JLabel nameLabel = new JLabel(item.getName());  // 아이템 이름 라벨
+        JLabel countLabel = new JLabel("개수: " + item.getNum());  // 아이템의 눌린 수 라벨
+
+        panel.add(nameLabel, BorderLayout.CENTER);
+        panel.add(countLabel, BorderLayout.SOUTH);
 
         return panel;
     }
     
-    public void addItemToCart(String itemInfo) {
+    public void addItemToCart(cart item) {
         // 장바구니에 item 추가하는 로직 (구체적인 코드는 프로젝트의 나머지 부분에 따라 다르겠지만, 예를 들어 List<Item> 타입의 장바구니 리스트에 item을 추가하는 코드가 여기에 위치하게 될 것입니다)
 
         // 새로 추가된 item을 이용하여 패널 생성
-        JPanel panel = createCart(itemInfo);
+        JPanel panel = createCart(item);
         
         // 생성한 패널을 cartInner에 추가
         PosMain.getCartInner().add(panel);
@@ -286,12 +291,12 @@ public class Beverage implements ActionListener {
 		            // 그렇지 않으면, 새 항목을 list에 추가합니다.
 		            list.add(item);
 		        }
-		        
+
 		        // cartInner 패널 초기화
 		        PosMain.getCartInner().removeAll();
 		        // list의 아이템들을 이용하여 패널을 생성하고, 이를 cartInner에 추가
 		        for (cart itemInfo : list) {
-		            JPanel panel = createCart(itemInfo.toString()); // 각 아이템의 정보를 가진 패널 생성
+		            JPanel panel = createCart(itemInfo); // 각 아이템의 정보를 가진 패널 생성
 		            PosMain.getCartInner().add(panel); // 생성한 패널을 cartInner에 추가
 		        }
 		        PosMain.getCartInner().revalidate(); // UI를 갱신하여 새로 추가된 패널들이 보이게 합니다.

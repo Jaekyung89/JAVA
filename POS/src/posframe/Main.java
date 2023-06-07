@@ -1,6 +1,7 @@
 package posframe;
 
 import java.awt.EventQueue;
+import java.awt.FlowLayout;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -70,7 +71,7 @@ public class Main implements ActionListener, MouseListener {
 		Mainframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Mainframe.getContentPane().setLayout(null);
 		Mainframe.setLocationRelativeTo(null);
-		Mainframe.setResizable(false);
+//		Mainframe.setResizable(false);
 		
 		MainPanel();
         
@@ -251,10 +252,7 @@ public class Main implements ActionListener, MouseListener {
         cart.setLayout(new BorderLayout());
         
         cartInner = new JPanel();
-        cartInner.setLayout(new BoxLayout(cartInner, BoxLayout.X_AXIS));
-        
-        cartInner.setAlignmentX(Component.CENTER_ALIGNMENT);
-        cartInner.setAlignmentY(Component.LEFT_ALIGNMENT);
+        cartInner.setLayout(new FlowLayout(FlowLayout.LEFT));
         
         
         cartInner.setBackground(Color.WHITE);
