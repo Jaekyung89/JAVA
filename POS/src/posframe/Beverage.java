@@ -2,11 +2,13 @@ package posframe;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.TitledBorder;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 
 import javax.swing.BorderFactory;
@@ -16,11 +18,11 @@ import java.awt.GridLayout;
 import java.awt.Image;
 
 import javax.swing.JLabel;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,6 +39,9 @@ public class Beverage implements ActionListener {
 	dataBase DB = new dataBase();
 	ResultSet rs;
 	private JPanel p6;
+	private JPanel cartInner;
+	private JButton purchase;
+	private JButton cancel;
 	
 	public Beverage(Main PosMain) {
 		beverageframe = new JFrame();
@@ -168,7 +173,7 @@ public class Beverage implements ActionListener {
 		        bvg.setBackground(Color.WHITE);
 		        bvg.setBorder(new TitledBorder(new RoundedBorder(10, 3, new Color(4, 199, 246))));
 		        
-		        bvgbtn[i] = createButton("javaImage/beverage/beverage" + (i+1) + ".png", NAME);
+		        bvgbtn[i] = createButton("javaImage/beverage/beverage" + (i+1) + ".png", NAME, PRICE);
 		        
 		        JLabel bvgname = new JLabel(NAME);
 		        bvgname.setHorizontalAlignment(JLabel.CENTER);
@@ -223,13 +228,66 @@ public class Beverage implements ActionListener {
     }
 
     private void sp6() {
-    	p6 = new JPanel();
+        p6 = new JPanel();
         p6.setBackground(Color.WHITE);
         p6.setBounds(0, 650, 1200, 300);
         Beveragemp1.add(p6);
         p6.setLayout(null);
         
+        JPanel cart = new JPanel();
+        cart.setLayout(new BorderLayout());
         
+        cartInner = new JPanel();
+        cartInner.setLayout(new FlowLayout(FlowLayout.LEFT));
+        
+        
+        cartInner.setBackground(Color.WHITE);
+        
+        JScrollPane sp = new JScrollPane(cartInner, JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        sp.setBorder(BorderFactory.createEmptyBorder());
+        
+        cart.setBounds(0, 0, 1000, 263);
+        cart.add(sp, BorderLayout.CENTER);
+        
+        p6.add(cart);
+        
+        JPanel pc = new JPanel();
+        pc.setBounds(1000, 0, 200, 250);
+        pc.setLayout(null);
+        pc.setBackground(Color.WHITE);
+        
+        purchase = createButton("icon/purchase.png","결제");
+        purchase.addActionListener(this);
+        purchase.setPreferredSize(new Dimension(190, 120));
+        purchase.setBounds(0, 0, 190, 120);
+        pc.add(purchase);
+        
+        cancel = createButton("icon/cancel.png","취소");
+        cancel.addActionListener(this);
+        cancel.setPreferredSize(new Dimension(190, 120));
+        cancel.setBounds(0, 130, 190, 120);
+        pc.add(cancel);
+        
+        p6.add(pc); 
+        
+        for(int i = 0; i < PosMain.getCartlist().size(); i++) {
+			String s_name = PosMain.getCartlist().get(i).getName();
+			int s_num = PosMain.getCartlist().get(i).getNum();
+			cart item = new cart(s_name, s_num);
+			addItemToCart(item);
+		}
+    }
+    
+    private JButton createButton(String imagePath, String name, int price) {
+        JButton button = new JButton();
+        button.setActionCommand(name);
+        button.setBorder(BorderFactory.createLineBorder(new Color(217, 217, 217)));
+        button.setBackground(new Color(217, 217, 217));
+        button.setBorderPainted(false);
+        button.setIcon(new ImageIcon(imagePath));
+        button.setOpaque(false);
+        button.addActionListener(this);
+        return button;
     }
     
     private JButton createButton(String imagePath, String name) {
@@ -262,18 +320,23 @@ public class Beverage implements ActionListener {
     }
     
     public void addItemToCart(cart item) {
-        // 장바구니에 item 추가하는 로직 (구체적인 코드는 프로젝트의 나머지 부분에 따라 다르겠지만, 예를 들어 List<Item> 타입의 장바구니 리스트에 item을 추가하는 코드가 여기에 위치하게 될 것입니다)
-
-        // 새로 추가된 item을 이용하여 패널 생성
-        JPanel panel = createCart(item);
+        
+    	JPanel panel = createCart(item);
+    	JPanel panel2 = createCart(item);
         
         // 생성한 패널을 cartInner에 추가
         PosMain.getCartInner().add(panel);
+        cartInner.add(panel2);
+        
         
         // UI를 갱신하여 새로 추가된 패널이 보이게 함
         PosMain.getCartInner().revalidate();
         PosMain.getCartInner().repaint();
+        cartInner.revalidate();
+        cartInner.repaint();
     }
+    
+    
     
 	public void actionPerformed(ActionEvent e) {
 		Object obj = e.getSource();
@@ -281,6 +344,14 @@ public class Beverage implements ActionListener {
 		if (obj == GoHome) {
 			BeveragePanel.setVisible(false);
 			PosMain.getMp1().setVisible(true);
+			PosMain.getCartInner().removeAll();
+			
+			for(int i = 0; i < PosMain.getCartlist().size(); i++) {
+				String s_name = PosMain.getCartlist().get(i).getName();
+				int s_num = PosMain.getCartlist().get(i).getNum();
+				cart item = new cart(s_name, s_num);
+				addItemToCart(item);
+			}
 		}
 		for (int i = 0; i < bvgbtn.length; i++) {
 	        if (obj == bvgbtn[i]) {
@@ -294,7 +365,6 @@ public class Beverage implements ActionListener {
 	                    break;
 	                }
 	            }
-
 	            if (index != -1) {
 	                // 이름이 같은 항목이 이미 있으면, 그 항목의 수량을 증가시킵니다.
 	                PosMain.getCartlist().get(index).add_item(PosMain.getCartlist(), index);
@@ -302,13 +372,17 @@ public class Beverage implements ActionListener {
 	                if (countLabel != null) {
 	                    countLabel.setText("개수: " + PosMain.getCartlist().get(index).getNum());
 	                }
-	            } else {
+	            }    
+	           else {
 	                // 그렇지 않으면, 새 항목을 list에 추가하고 패널을 만듭니다.
-	                cart item = new cart(name, 1);
+	        	    int price = new cart().price(name);
+	                cart item = new cart(name, 1, price);
 	                PosMain.getCartlist().add(item);
 	                addItemToCart(item);
 	            }
 	        }
 	    }
+		cart c = new cart();
+		c.print(PosMain.getCartlist());
     }
 }

@@ -26,16 +26,16 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Meal implements ActionListener {
+public class Mlik implements ActionListener {
 	
 	private Map<String, JLabel> countLabels = new HashMap<>();
-	private JFrame mealframe;
-	private JPanel mealPanel;
+	private JFrame milkframe;
+	private JPanel milkPanel;
 	private Main PosMain;
 	private JButton GoHome;
 	private JButton bvgbtn[] = new JButton[10];
 	private Font font = new Font("맑은 고딕", Font.BOLD, 15);
-	private JPanel mealmp1;
+	private JPanel milkmp1;
 	dataBase DB = new dataBase();
 	ResultSet rs;
 	private JPanel p6;
@@ -43,40 +43,40 @@ public class Meal implements ActionListener {
 	private JButton purchase;
 	private JButton cancel;
 	
-	public Meal(Main PosMain) {
-		mealframe = new JFrame();
-		mealframe.setBounds(0, 0, 1200, 950);
-		mealframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		mealframe.getContentPane().setLayout(null);
-		mealframe.setLocationRelativeTo(null);
-		mealframe.setResizable(false);
+	public Mlik(Main PosMain) {
+		milkframe = new JFrame();
+		milkframe.setBounds(0, 0, 1200, 950);
+		milkframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		milkframe.getContentPane().setLayout(null);
+		milkframe.setLocationRelativeTo(null);
+		milkframe.setResizable(false);
 		
 		this.PosMain = PosMain;
 		
-		mealPanel();
+		milkPanel();
         
 		PosMain.getMainPanel().repaint();
 		PosMain.getMainPanel().revalidate();
 		
-        mealframe.setVisible(false);
+        milkframe.setVisible(false);
 	}
 	
 
-	private void mealPanel() {
-		mealPanel = new JPanel();
-		mealPanel.setLayout(null);
-		mealPanel.setBounds(0, 0, 1200, 950);
-        PosMain.getMainPanel().add(mealPanel);
+	private void milkPanel() {
+		milkPanel = new JPanel();
+		milkPanel.setLayout(null);
+		milkPanel.setBounds(0, 0, 1200, 950);
+        PosMain.getMainPanel().add(milkPanel);
         
-        mealmp1();
+        milkmp1();
 		
     }
 
-	private void mealmp1() {
-		mealmp1 = new JPanel();
-		mealmp1.setLayout(null);
-		mealmp1.setBounds(0, 0, 1200, 950);
-        mealPanel.add(mealmp1);
+	private void milkmp1() {
+		milkmp1 = new JPanel();
+		milkmp1.setLayout(null);
+		milkmp1.setBounds(0, 0, 1200, 950);
+        milkPanel.add(milkmp1);
         
 		sp1();
         sp2();
@@ -90,14 +90,14 @@ public class Meal implements ActionListener {
         JPanel p1 = new JPanel();
         p1.setBackground(Color.WHITE);
         p1.setBounds(0, 0, 1200, 15);
-        mealmp1.add(p1);
+        milkmp1.add(p1);
     }
 
     private void sp2() {
         JPanel p2 = new JPanel();
         p2.setBackground(Color.white);
         p2.setBounds(0, 15, 1200, 50);
-        mealmp1.add(p2);
+        milkmp1.add(p2);
         p2.setLayout(null);
         
         JLabel lblNewLabel = new JLabel();
@@ -121,14 +121,14 @@ public class Meal implements ActionListener {
         JPanel p3 = new JPanel();
         p3.setBackground(Color.WHITE);
         p3.setBounds(0, 65, 1200, 15);
-        mealmp1.add(p3);
+        milkmp1.add(p3);
     }
     
     private void sp4() {
         JPanel p4 = new JPanel();
         p4.setBackground(Color.WHITE);
         p4.setBounds(0, 80, 1200, 100);
-        mealmp1.add(p4);
+        milkmp1.add(p4);
         
         GoHome = new JButton(new ImageIcon("icon/Home.png"));
         GoHome.setBounds(12, 25, 155, 50);
@@ -146,7 +146,7 @@ public class Meal implements ActionListener {
     private void sp5() {
     	
     	DB = new dataBase();
-        rs = DB.db("meal");
+        rs = DB.db("milk");
     	JPanel p5 = new JPanel();
     	JPanel btnpan = new JPanel();
 
@@ -160,7 +160,7 @@ public class Meal implements ActionListener {
 				
 		        p5.setBackground(Color.WHITE);
 		        p5.setBounds(0, 180, 1200, 470);
-		        mealmp1.add(p5);
+		        milkmp1.add(p5);
 		        p5.setLayout(new BorderLayout());
 		        
 		        btnpan.setBounds(0, 0, 1200, 450);
@@ -173,7 +173,7 @@ public class Meal implements ActionListener {
 		        bvg.setBackground(Color.WHITE);
 		        bvg.setBorder(new TitledBorder(new RoundedBorder(10, 3, new Color(4, 199, 246))));
 		        
-		        bvgbtn[i] = createButton("javaImage/meal/meal" + (i+1) + ".png", NAME);
+		        bvgbtn[i] = createButton("javaImage/milk/milk" + (i+1) + ".png", NAME);
 		        
 		        JLabel bvgname = new JLabel(NAME);
 		        bvgname.setHorizontalAlignment(JLabel.CENTER);
@@ -231,7 +231,7 @@ public class Meal implements ActionListener {
         p6 = new JPanel();
         p6.setBackground(Color.WHITE);
         p6.setBounds(0, 650, 1200, 300);
-        mealmp1.add(p6);
+        milkmp1.add(p6);
         p6.setLayout(null);
         
         JPanel cart = new JPanel();
@@ -330,7 +330,7 @@ public class Meal implements ActionListener {
 		Object obj = e.getSource();
 		
 		if (obj == GoHome) {
-			mealPanel.setVisible(false);
+			milkPanel.setVisible(false);
 			PosMain.getMp1().setVisible(true);
 			PosMain.getCartInner().removeAll();
 			

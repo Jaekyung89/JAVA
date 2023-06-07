@@ -11,12 +11,12 @@ public class dataBase {
 	public ResultSet db(String data) {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/selfpos","root", "@rlaworud809");
+			Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/selfpos","root", "1234");
 			
 			Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 			
 			//DB 읽기 meal 부분 수정하면 됨
-			ResultSet rs = stmt.executeQuery("SELECT * FROM " + data + " ORDER BY ID ASC;");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM " + data + " ORDER BY NUMBER ASC;");
 			
 //			while(rs.next()) {
 //				String NAME = rs.getString("NAME");

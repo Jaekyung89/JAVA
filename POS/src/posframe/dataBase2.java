@@ -2,11 +2,9 @@ package posframe;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import javax.swing.JOptionPane;
 
 public class dataBase2 {
 
@@ -18,18 +16,20 @@ public class dataBase2 {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection conn = DriverManager.getConnection(
 					"jdbc:mysql://localhost:3306/selfpos",
-					"root", "@rlaworud809");
+					"root", "1234");
 			System.out.println("OK");
 			
 			Statement stmt = conn.createStatement();
 			
 			  // 데이터 입력
-	         id = JOptionPane.showInputDialog("id");
-	         money = JOptionPane.showInputDialog("money");
+	         String ID = id;
+	         String Point = money;
 
-	         String insertSQL = "INSERT INTO membership (id, name) VALUES " +
-	                 "('" + id + "','" + money + "')";
+	         String insertSQL = "INSERT INTO selfpos.membership (ID, `Point`) VALUES " +
+	                 "('" + ID + "','" + Point + "')";
 	         stmt.executeUpdate(insertSQL);
+	         
+	         
 	         
 	         
 	         

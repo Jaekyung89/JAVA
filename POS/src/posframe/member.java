@@ -13,7 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class member extends JFrame implements ActionListener {
+public class member extends JFrame {
 
 	
 	private JTextField tf;
@@ -25,17 +25,18 @@ public class member extends JFrame implements ActionListener {
 	Double result = 0.0;
 	private JButton Ok;
 	private dataBase2 db2 = null;
+	private pay p = null;
 	
 
-	public member(String title) {
-		setTitle(title);
+	public member(int price) {
 		setSize(300, 480);
 		setResizable(false);
 		setLocationRelativeTo(null);
 		setLayout(new BorderLayout());
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		head();
-		body();
+		body(price);
 		setVisible(true);
 	}
 
@@ -53,7 +54,7 @@ public class member extends JFrame implements ActionListener {
 
 	}
 
-	private void body() {
+	private void body(int price) {
 
 		JPanel center = new JPanel();
 		add(center, BorderLayout.CENTER);
@@ -73,7 +74,43 @@ public class member extends JFrame implements ActionListener {
 			button[i].setBorderPainted(false);
 			button[i].setBackground(Color.WHITE);
 			center.add(button[i]);
-			button[i].addActionListener(this);
+			button[i].addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					obj = e.getSource();
+					JButton btn = (JButton)obj;
+					String data = e.getActionCommand();
+					
+					
+					if(data.equals("1") || data.equals("2") || data.equals("3") || 
+							data.equals("4") || data.equals("5") || data.equals("6") || 
+							data.equals("7") || data.equals("8") || data.equals("9") || 
+							data.equals("0") || data.equals("-")) {
+						val1 = tf.getText() + data;
+						tf.setText(val1);
+					}
+					
+					
+					
+					else if(btn.equals(button[11])) { // <-
+						val1 = tf.getText();
+						char ch[];
+						String temp;
+						
+						ch = val1.toCharArray();
+						ch[ch.length - 1] = '\n';
+						String str = new String(ch);
+						temp = str.substring(0, ch.length-1);
+						val1 = temp;
+						tf.setText(temp);
+					}
+					
+					
+				}
+				
+			});
 
 			button[i].setPreferredSize(new Dimension(70, 60));
 		}
@@ -86,67 +123,36 @@ public class member extends JFrame implements ActionListener {
 		Ok.setBorderPainted(false);
 		Ok.setBackground(Color.WHITE);
 		center.add(Ok);
-		Ok.addActionListener(this);
-		
 		Ok.setPreferredSize(new Dimension(250, 45));
-		
-
-	}
-	
-	public static void main(String[] args) {
-		new member("member");
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		obj = e.getSource();
-		JButton btn = (JButton)obj;
-		String data = e.getActionCommand();
-		
-		
-		if(data.equals("1") || data.equals("2") || data.equals("3") || 
-				data.equals("4") || data.equals("5") || data.equals("6") || 
-				data.equals("7") || data.equals("8") || data.equals("9") || 
-				data.equals("0") || data.equals("-")) {
-			val1 = tf.getText() + data;
-			tf.setText(val1);
-		}
-		
-		
-		
-		else if(btn.equals(button[11])) { // <-
-			val1 = tf.getText();
-			char ch[];
-			String temp;
-			
-			ch = val1.toCharArray();
-			ch[ch.length - 1] = '\n';
-			String str = new String(ch);
-			temp = str.substring(0, ch.length-1);
-			val1 = temp;
-			tf.setText(temp);
-		}
-		
-		if(data.equals("적립")) {
-			//db 삽입
-			
-			/*
-			 int point = money*0.01
-			 
-			 */
-			int point=0;
-			String money = Integer.toString(point);
-			String originalText = tf.getText();  // 텍스트 필드에서 문자열 읽기
-	        String id = originalText.replace("-", "");  // "-" 제거
-	        
-	        db2 = new dataBase2(id, money);
-			
-			
-			
-			dispose();
-		}
-		
-	}
+		Ok.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				obj = e.getSource();
+				JButton btn = (JButton)obj;
+				String data = e.getActionCommand();
+				
+				if(data.equals("적립")) {
+					//db 삽입
+					int Point = price;
+					
+				 	int point = (int) (Point * 0.01);
+				 
+					
+					String money = Integer.toString(point);
+					String originalText = tf.getText();  // 텍스트 필드에서 문자열 읽기
+			        String id = originalText.replace("-", "");  // "-" 제거
+			        
+			        db2 = new dataBase2(id, money);
+					
+					
+					setVisible(false);
+			        
+					dispose();
+				}
+			}
+				
+		});
+	}	
 
 } 
 

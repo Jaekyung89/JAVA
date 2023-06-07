@@ -1,17 +1,17 @@
 package posframe;
 
-import java.awt.EventQueue;
-
-
 import java.awt.FlowLayout;
 import java.awt.Font;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.Timer;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Dimension;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -22,13 +22,11 @@ import java.awt.Image;
 import javax.swing.JLabel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.TimerTask;
 
 public class pay extends JFrame implements ActionListener  {
 
    private JFrame frame;
    private JPanel mp1;
-   private JPanel mp2;
    private JButton btn1;
    private JButton btn2;
    private JButton btn3;
@@ -39,62 +37,40 @@ public class pay extends JFrame implements ActionListener  {
    private JButton apple;
    private JButton cancel;
    private JPanel panel;
-   private Main main = null;
-   private member mb = null;
-   
-   private int price=0;
-private posframe.payCash pC;
+   private Main PosMain;
+   private member mb;
+   private payCash pC;
+   private JLabel sum;
+   private JLabel count;
+   private JPanel p6;
+   private JPanel cart;
+   private JPanel cartInner;
 
-   /**
-    * Launch the application.
-    */
-   public static void main(String[] args) {
-      EventQueue.invokeLater(new Runnable() {
-         public void run() {
-            try {
-               pay window = new pay();
-               window.frame.setVisible(true);
-            } catch (Exception e) {
-               e.printStackTrace();
-            }
-         }
-      });
-      
-      
+   public pay(Main PosMain) {
+	  frame = new JFrame();
+	  frame.setBounds(0, 0, 1200, 950);
+	  frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	  frame.getContentPane().setLayout(null);
+	  frame.setLocationRelativeTo(null);
+	  frame.setResizable(false);
+
+	  this.PosMain = PosMain;
+	  
+	  panel();
+	  
+	  PosMain.getMainPanel().repaint();
+	  PosMain.getMainPanel().revalidate();
+	      
+	  frame.setVisible(false);
    }
-
-   /**
-    * Create the application.
-    */
-   public pay() {
-      initialize();
-   }
-
-   /*
-    * Initialize the contents of the frame.
-    */
-   
-   private void initialize() {
-      frame = new JFrame();
-      frame.setBounds(0, 0, 1200, 950);
-      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-      frame.getContentPane().setLayout(null);
-      frame.setLocationRelativeTo(null);
-      frame.setResizable(false);
-
-      panel();
-      
-      frame.setVisible(true);
-    }
    
    private void panel() {
       panel = new JPanel();
       panel.setLayout(null);
       panel.setBounds(0, 0, 1200, 950);
-        frame.getContentPane().add(panel);
+      PosMain.getMainPanel().add(panel);
         
         mp1();
-      mp2();
       
     }
 
@@ -113,28 +89,19 @@ private posframe.payCash pC;
         sp7();
         sp8();
         sp9();
-    }
-   
-   
-
-   private void mp2() {
-        mp2 = new JPanel();
-        mp2.setLayout(null);
-        mp2.setBounds(0, 0, 1200, 950);
-        panel.add(mp2);
-        
+        sp10();
     }
    
    private void sp1() {
         JPanel p1 = new JPanel();
         p1.setBackground(Color.WHITE);
-        p1.setBounds(0, 0, 1200, 25);
+        p1.setBounds(0, 0, 1200, 15);
         mp1.add(p1);
     }
    private void sp2() {
       JPanel p2 = new JPanel();
         p2.setBackground(Color.WHITE);
-        p2.setBounds(0, 25, 1200, 300);
+        p2.setBounds(0, 15, 1200, 50);
         mp1.add(p2);
         p2.setLayout(null);
         
@@ -155,7 +122,33 @@ private posframe.payCash pC;
         p2.add(lblNewLabel);
    }
    
-   private void sp3() {
+   private void sp10() {
+	   JPanel p10 = new JPanel();
+	   p10.setBounds(0, 65, 1200, 300);
+	   p10.setBackground(Color.WHITE);
+	   mp1.add(p10);
+	   p10.setLayout(null);
+       
+       cart = new JPanel();
+       cart.setLayout(new BorderLayout());
+       
+       cartInner = new JPanel();
+       cartInner.setLayout(new FlowLayout(FlowLayout.LEFT));
+       
+       cartInner.setBackground(Color.WHITE);
+       
+       JScrollPane sp = new JScrollPane(cartInner, JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+       sp.setBorder(BorderFactory.createEmptyBorder());
+       
+       cart.setBounds(0, 0, 1200, 263);
+       cart.add(sp, BorderLayout.CENTER);
+       
+       p6.add(cart);
+       
+   }
+   
+
+private void sp3() {
       JPanel p3 = new JPanel();
       p3.setBackground(Color.WHITE);
       p3.setBounds(0, 460, 330, 400);
@@ -190,12 +183,17 @@ private posframe.payCash pC;
         btn3.addActionListener(this);
         p3.add(btn3);
         
+        
    }
    
    private void sp4() {
+
+	   int price = PosMain.getTotalPrice();
+	   int amount = PosMain.getTotal();
+	   
       JPanel p4 = new JPanel();
       p4.setBackground(Color.white);
-      p4.setBounds(330, 490, 420, 370);
+      p4.setBounds(330, 498, 420, 370);
       p4.setLayout(new GridLayout(1, 1, 20, 20));
       mp1.add(p4);
 
@@ -204,7 +202,7 @@ private posframe.payCash pC;
       JLabel imageLabel = new JLabel(imageIcon);
       imageLabel.setBounds(0, 50, imageIcon.getIconWidth(), imageIcon.getIconHeight());
 
-      JLabel count = new JLabel("n개");
+      count = new JLabel(amount + "개");
       count.setBounds(200, 0, 350, 90);
       count.setFont(new Font("고딕", Font.BOLD, 24));
 
@@ -218,7 +216,7 @@ private posframe.payCash pC;
       JLabel imageLabel2 = new JLabel(imageIcon2);
       imageLabel2.setBounds(0, 200, imageIcon2.getIconWidth(), imageIcon2.getIconHeight());
 
-      JLabel sum = new JLabel("n원");
+      sum = new JLabel(price + "원");
       sum.setBounds(200, 0, 350, 90);
       sum.setFont(new Font("고딕", Font.BOLD, 24));
 
@@ -260,68 +258,68 @@ private posframe.payCash pC;
    }
    
    private void sp6() {
-      JPanel p6 = new JPanel();
-      p6.setBackground(Color.white);
-      p6.setBounds(750, 460, 440, 400);
-      p6.setLayout(new GridLayout(3, 2, 10, 0));
-      mp1.add(p6);
-      
-      card = new JButton(); // card
-      card.setBorder(BorderFactory.createLineBorder(new Color(217, 217, 217)));
-      card.setBackground(new Color(217, 217, 217));
-      card.setBorderPainted(false);
-      card.setIcon(new ImageIcon("javaImage/pay/card.png"));
-      card.setOpaque(false);
-      card.addActionListener(this);
-      p6.add(card);
-      
-      
-      samsung = new JButton(); // samsung
-      samsung.setBorder(BorderFactory.createLineBorder(new Color(217, 217, 217)));
-      samsung.setBackground(new Color(217, 217, 217));
-      samsung.setBorderPainted(false);
-      samsung.setIcon(new ImageIcon("javaImage/pay/samsung.png"));
-      samsung.setOpaque(false);
-      samsung.addActionListener(this);
-      p6.add(samsung);
-      
-      cash = new JButton(); // cash
-      cash.setBorder(BorderFactory.createLineBorder(new Color(217, 217, 217)));
-      cash.setBackground(new Color(217, 217, 217));
-      cash.setBorderPainted(false);
-      cash.setIcon(new ImageIcon("javaImage/pay/cash.png"));
-      cash.setOpaque(false);
-      cash.addActionListener(this);
-      p6.add(cash);
-      
-      apple = new JButton(); // apple
-      apple.setBorder(BorderFactory.createLineBorder(new Color(217, 217, 217)));
-      apple.setBackground(new Color(217, 217, 217));
-      apple.setBorderPainted(false);
-      apple.setIcon(new ImageIcon("javaImage/pay/apple.png"));
-      apple.setOpaque(false);
-      apple.addActionListener(this);
-      p6.add(apple);
-      
-      point = new JButton(); // point
-      point.setBorder(BorderFactory.createLineBorder(new Color(217, 217, 217)));
-      point.setBackground(new Color(217, 217, 217));
-      point.setBorderPainted(false);
-      point.setIcon(new ImageIcon("javaImage/pay/point.png"));
-      point.setOpaque(false);
-      point.addActionListener(this);
-      p6.add(point);
-      
-      cancel = new JButton(); // cancel
-      cancel.setBorder(BorderFactory.createLineBorder(new Color(217, 217, 217)));
-      cancel.setBackground(new Color(217, 217, 217));
-      cancel.setBorderPainted(false);
-      cancel.setIcon(new ImageIcon("javaImage/pay/cancel.png"));
-      cancel.setOpaque(false);
-      cancel.addActionListener(this);
-      p6.add(cancel);
-      
-   }
+	      p6 = new JPanel();
+	      p6.setBackground(Color.white);
+	      p6.setBounds(750, 460, 440, 400);
+	      p6.setLayout(new GridLayout(3, 3, 10, 10));
+	      mp1.add(p6);
+	      
+	      card = new JButton(); // card
+	      card.setBorder(BorderFactory.createLineBorder(new Color(217, 217, 217)));
+	      card.setBackground(new Color(217, 217, 217));
+	      card.setBorderPainted(false);
+	      card.setIcon(new ImageIcon("javaImage/pay/card.png"));
+	      card.setOpaque(false);
+	      card.addActionListener(this);
+	      p6.add(card);
+	      
+	      
+	      samsung = new JButton(); // samsung
+	      samsung.setBorder(BorderFactory.createLineBorder(new Color(217, 217, 217)));
+	      samsung.setBackground(new Color(217, 217, 217));
+	      samsung.setBorderPainted(false);
+	      samsung.setIcon(new ImageIcon("javaImage/pay/samsung.png"));
+	      samsung.setOpaque(false);
+	      samsung.addActionListener(this);
+	      p6.add(samsung);
+	      
+	      cash = new JButton(); // cash
+	      cash.setBorder(BorderFactory.createLineBorder(new Color(217, 217, 217)));
+	      cash.setBackground(new Color(217, 217, 217));
+	      cash.setBorderPainted(false);
+	      cash.setIcon(new ImageIcon("javaImage/pay/cash.png"));
+	      cash.setOpaque(false);
+	      cash.addActionListener(this);
+	      p6.add(cash);
+	      
+	      apple = new JButton(); // apple
+	      apple.setBorder(BorderFactory.createLineBorder(new Color(217, 217, 217)));
+	      apple.setBackground(new Color(217, 217, 217));
+	      apple.setBorderPainted(false);
+	      apple.setIcon(new ImageIcon("javaImage/pay/apple.png"));
+	      apple.setOpaque(false);
+	      apple.addActionListener(this);
+	      p6.add(apple);
+	      
+	      point = new JButton(); // point
+	      point.setBorder(BorderFactory.createLineBorder(new Color(217, 217, 217)));
+	      point.setBackground(new Color(217, 217, 217));
+	      point.setBorderPainted(false);
+	      point.setIcon(new ImageIcon("javaImage/pay/point.png"));
+	      point.setOpaque(false);
+	      point.addActionListener(this);
+	      p6.add(point);
+	      
+	      cancel = new JButton(); // cancel
+	      cancel.setBorder(BorderFactory.createLineBorder(new Color(217, 217, 217)));
+	      cancel.setBackground(new Color(217, 217, 217));
+	      cancel.setBorderPainted(false);
+	      cancel.setIcon(new ImageIcon("javaImage/pay/cancel.png"));
+	      cancel.setOpaque(false);
+	      cancel.addActionListener(this);
+	      p6.add(cancel);
+	      
+	   }
    
    private void sp7() {
       JPanel p7 = new JPanel();
@@ -347,15 +345,30 @@ private posframe.payCash pC;
 
     
    public void actionPerformed(ActionEvent e) {
+	   int price = PosMain.getTotalPrice();
+	   int amount = PosMain.getTotal();
+	   
       Object obj = e.getSource();
       if (obj == btn1) {
          price = price + 100;
+         amount++;
+         count.setText(amount+"개");
+         sum.setText(price + "원");
+         
       }
-      if (obj == btn1) {
+      if (obj == btn2) {
          price = price + 390;
+         amount++;
+         count.setText(amount+"개");
+         sum.setText(price + "원");
+         
       }
-      if (obj == btn1) {
-         price = price + 790;
+      if (obj == btn3) {
+         price = price + 750;
+         amount++;
+         count.setText(amount+"개");
+         sum.setText(price + "원");
+         
       }
       
       
@@ -364,7 +377,7 @@ private posframe.payCash pC;
          payLoading();
       }
       if(obj == cash) {
-    	 pC = new payCash();
+    	 pC = new payCash(price);
       }
       if(obj == samsung) {
          payLoading();
@@ -375,19 +388,20 @@ private posframe.payCash pC;
       
       if (obj == point) {
          //적립 창 켜기
-    	  mb = new member("적립");
+    	  mb = new member(price);
+    	  point.setVisible(false);
       }
       
       if(obj == cancel) {
          //초기 화면 되돌아가기
     	  //System.exit(0);
-    	  frame.setVisible(false);
-    	  main = new Main();
+    	  panel.setVisible(false);
+    	  PosMain.getMp1().setVisible(true);
       }
    }
 
 
-private void payLoading() {
+   private void payLoading() {
       Container c = getContentPane();
       c.setLayout(new FlowLayout());
       setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -415,30 +429,25 @@ private void payLoading() {
           repaint(); // 프레임 다시 그리기
 
           
-          
-          
           Timer exitTimer = new Timer(1000, exitEvent -> {
               dispose(); // 프레임 종료
+              panel.setVisible(false);
+  			  PosMain.getMp1().setVisible(true);
           });
           exitTimer.setRepeats(false); // 반복 실행하지 않도록 설정
           exitTimer.start(); // 타이머 시작
       });
       timer.setRepeats(false); // 반복 실행하지 않도록 설정
       timer.start(); // 타이머 시작
-   }
-   
-   
-
-   public JPanel getPanel() {
-      return panel;
+      
    }
 
-   public void setPanel(JPanel panel) {
-      this.panel = panel;
-   }
-   
-   
-   
-   
+   public JPanel getCartInner() {
+	return cartInner;
 }
 
+public void setCartInner(JPanel cartInner) {
+	this.cartInner = cartInner;
+}
+
+}

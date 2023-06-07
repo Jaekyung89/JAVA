@@ -7,11 +7,14 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
+import javax.swing.AbstractButton;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.Timer;
 
 public class payCash extends JFrame implements ActionListener {
 
@@ -26,16 +29,25 @@ public class payCash extends JFrame implements ActionListener {
 	private JButton Ok;
 	private JTextField User;
 	private JTextField OutPos;
+	private JTextField InPos;
+	private AbstractButton JLtx;
+	private AbstractButton imgLabel;
+	private Main main;
+	private JPanel center;
+	private JLabel inPos;
+	private JLabel user;
+	private JLabel outPos;
 	
 
-	public payCash() {
+	public payCash(int price) {
 		setSize(300, 480);
 		setResizable(false);
 		setLocationRelativeTo(null);
 		setLayout(new BorderLayout());
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		head();
-		body();
+		body(price);
 		setVisible(true);
 	}
 
@@ -49,32 +61,32 @@ public class payCash extends JFrame implements ActionListener {
 
 	}
 
-	private void body() {
+	private void body(int price) {
 
-		JPanel center = new JPanel();
+		center = new JPanel();
 		add(center, BorderLayout.CENTER);
 		center.setLayout(new FlowLayout(FlowLayout.LEFT, 19, 9));
 
-		JLabel inPos = new JLabel("금액");
+		inPos = new JLabel("금액");
 		inPos.setFont(new Font("고딕", Font.BOLD, 25));
-		JTextField InPos = new JTextField("왐밤빵", 10);//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		InPos = new JTextField(price+"", 10);//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		InPos.setFont(new Font("고딕", Font.BOLD, 20));
 		
 		center.add(inPos);
 		center.add(InPos);
 		
-		JLabel user = new JLabel("입금");
+		user = new JLabel("입금");
 		user.setFont(new Font("고딕", Font.BOLD, 25));
-		User = new JTextField(10);
+		User = new JTextField("", 10);
 		User.setFont(new Font("고딕", Font.BOLD, 20));
 		
 		center.add(user);
 		center.add(User);
 		
-		JLabel outPos = new JLabel("잔돈");
+		outPos = new JLabel("잔돈");
 		outPos.setFont(new Font("고딕", Font.BOLD, 25));
-		OutPos = new JTextField(10);
-		User.setFont(new Font("고딕", Font.BOLD, 20));
+		OutPos = new JTextField("", 10);
+		OutPos.setFont(new Font("고딕", Font.BOLD, 20));
 		
 		center.add(outPos);
 		center.add(OutPos);
@@ -95,12 +107,12 @@ public class payCash extends JFrame implements ActionListener {
 			center.add(button[i]);
 			button[i].addActionListener(this);
 
-			button[i].setPreferredSize(new Dimension(70, 60));
+			button[i].setPreferredSize(new Dimension(70, 55));
 		}
 		
 		
 		
-		Ok = new JButton("계산");
+		Ok = new JButton("닫기");
 		Ok.setFont(new Font("고딕", Font.BOLD, 25));
 		
 		Ok.setBorderPainted(false);
@@ -108,13 +120,12 @@ public class payCash extends JFrame implements ActionListener {
 		center.add(Ok);
 		Ok.addActionListener(this);
 		
-		Ok.setPreferredSize(new Dimension(250, 45));
+		Ok.setPreferredSize(new Dimension(250, 30));
 		
 
 	}
 	
 	public static void main(String[] args) {
-		new payCash();
 	}
 
 	@Override
@@ -133,14 +144,32 @@ public class payCash extends JFrame implements ActionListener {
 		}
 		
 		else if(btn.equals(button[9])) { // 계산 버튼
-			val1 = User.getText();
-			int intVal = Integer.parseInt(val1);
+			String in = InPos.getText();
+			String cen = User.getText();
+			int Input = Integer.parseInt(in);
+			int CenData = Integer.parseInt(cen);
+			int Output = CenData - Input;
+			String output = Integer.toString(Output);
+			OutPos.setText(output);
+			
+			if(Output >= 0) {
+			
+				
+				
+				
+				
+				payLoading();
+			      
+			}
+			
 			///////////////////////////////////////////// reT = money - val1/
 			
 			char ch[];
 			String temp;
-			
-			
+		}
+		
+		else if(btn.equals(Ok)) {
+			dispose();
 		}
 		
 		
@@ -159,6 +188,60 @@ public class payCash extends JFrame implements ActionListener {
 		}
 		
 		
+	}
+
+
+	private void payLoading() {
+		// TODO Auto-generated method stub
+		  Container c = getContentPane();
+	      c.setLayout(new FlowLayout());
+	      setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	      setSize(500, 400);
+	      setLocationRelativeTo(null);
+	      
+	      JLabel JLtx = new JLabel("결제중입니다.");
+	      JLtx.setFont(new Font("고딕", Font.BOLD, 28));
+		  
+	      ImageIcon imageIcon = new ImageIcon("javaImage/pay/loading.gif");
+	      JLabel imgLabel = new JLabel(imageIcon);
+	      
+	      for (int i = 0; i < btnGhp.length; i++) {
+				center.remove(button[i]);
+			}
+	      
+	      center.remove(Ok);
+	      center.remove(inPos);
+	      center.remove(InPos);
+	      center.remove(user);
+	      center.remove(User);
+	      
+	      c.add(JLtx);
+	      c.add(imgLabel);
+	      
+	      setVisible(true);
+	      
+	     
+	      Timer timer = new Timer(2000, e -> {
+	    	  JLtx.setText("결제가 완료되었습니다."); // 새로운 라벨로 변경
+	    	  ImageIcon imageIcon2 = new ImageIcon("javaImage/pay/checkPay.png");
+	    	  imgLabel.setIcon(imageIcon2);
+	    	  imgLabel.setBounds(750, 300, 450, 45);
+	          repaint(); // 프레임 다시 그리기
+
+	          
+	          Timer exitTimer = new Timer(1000, exitEvent -> {
+	              dispose(); // 프레임 종료
+	              setVisible(false);
+	        	  main = new Main();
+	        	  main.getMainPanel().setVisible(true);
+	          });
+	          exitTimer.setRepeats(false); // 반복 실행하지 않도록 설정
+	          exitTimer.start(); // 타이머 시작
+	      });
+	      timer.setRepeats(false); // 반복 실행하지 않도록 설정
+	      timer.start(); // 타이머 시작
+	      
+	      
 	}
 
 } 

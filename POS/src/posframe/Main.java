@@ -37,8 +37,6 @@ public class Main implements ActionListener, MouseListener {
 	private JButton btn6;
 	private JButton btn7;
 	private JButton btn8;
-	private JButton btn9;
-	private JButton btn10;
 	private JPanel MainPanel;
 	private JLabel banner;
 	private JLabel banner2;
@@ -49,6 +47,7 @@ public class Main implements ActionListener, MouseListener {
 
 	private JPanel cartInner;
 	private JPanel p6;
+	private JPanel cart;
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -70,7 +69,7 @@ public class Main implements ActionListener, MouseListener {
 		Mainframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Mainframe.getContentPane().setLayout(null);
 		Mainframe.setLocationRelativeTo(null);
-//		Mainframe.setResizable(false);
+		Mainframe.setResizable(false);
 		
 		MainPanel();
         
@@ -161,8 +160,6 @@ public class Main implements ActionListener, MouseListener {
         btn6 = createButton("icon/meal.png");
         btn7 = createButton("icon/noodle.png");
         btn8 = createButton("icon/quasi_drugs.png");
-        btn9 = createButton("icon/drink.png");
-        btn10 = createButton("icon/ciga.png");
         
         btnpan.add(btn1);
         btnpan.add(btn2);
@@ -172,8 +169,6 @@ public class Main implements ActionListener, MouseListener {
         btnpan.add(btn6);
         btnpan.add(btn7);
         btnpan.add(btn8);
-        btnpan.add(btn9);
-        btnpan.add(btn10);
         
         p4.add(btnpan, BorderLayout.CENTER);
         
@@ -247,12 +242,11 @@ public class Main implements ActionListener, MouseListener {
         mp1.add(p6);
         p6.setLayout(null);
         
-        JPanel cart = new JPanel();
+        cart = new JPanel();
         cart.setLayout(new BorderLayout());
         
         cartInner = new JPanel();
         cartInner.setLayout(new FlowLayout(FlowLayout.LEFT));
-        
         
         cartInner.setBackground(Color.WHITE);
         
@@ -262,12 +256,10 @@ public class Main implements ActionListener, MouseListener {
         cart.setBounds(0, 0, 1000, 263);
         cart.add(sp, BorderLayout.CENTER);
         
-        
-        
         p6.add(cart);
         
         JPanel pc = new JPanel();
-        pc.setBounds(1000, 0, 200, 230);
+        pc.setBounds(1000, 0, 200, 250);
         pc.setLayout(null);
         pc.setBackground(Color.WHITE);
         
@@ -296,6 +288,22 @@ public class Main implements ActionListener, MouseListener {
         return button;
     }
 	
+	public int getTotalPrice() {
+	    int total = 0;
+	    for (cart item : getCartlist()) {
+	        total += item.getPrice();
+	    }
+	    return total;
+	}
+	public int getTotal() {
+	    int total = 0;
+	    for (cart item : getCartlist()) {
+	        total += item.getNum();
+	    }
+	    return total;
+	}
+	
+	
 	public void actionPerformed(ActionEvent e) {
 		Object obj = e.getSource();
 		if (obj == btn1) {
@@ -312,7 +320,7 @@ public class Main implements ActionListener, MouseListener {
 		}
 		else if (obj == btn4) {
 			mp1.setVisible(false);
-			new Milk(this);
+			new Mlik(this);
 		}
 		else if (obj == btn5) {
 			mp1.setVisible(false);
@@ -321,6 +329,24 @@ public class Main implements ActionListener, MouseListener {
 		else if (obj == btn6) {
 			mp1.setVisible(false);
 			new Meal(this);
+		} 
+		else if (obj == btn7) {
+			mp1.setVisible(false);
+			new Noodle(this);
+		} 
+		else if (obj == btn8) {
+			mp1.setVisible(false);
+			new Meal(this);
+		} 
+		
+		else if (obj == purchase) {
+			mp1.setVisible(false);
+			new pay(this);
+		}
+		else if (obj == cancel) {
+			cartInner.removeAll();
+			cartInner.repaint();
+			cartInner.revalidate();
 		}
 	}
 
@@ -396,6 +422,22 @@ public class Main implements ActionListener, MouseListener {
 
 	public void setMyCart(cart myCart) {
 		this.myCart = myCart;
+	}
+
+	public JPanel getCart() {
+		return cart;
+	}
+
+	public void setCart(JPanel cart) {
+		this.cart = cart;
+	}
+
+	public JFrame getMainframe() {
+		return Mainframe;
+	}
+
+	public void setMainframe(JFrame mainframe) {
+		Mainframe = mainframe;
 	}
 
 }
