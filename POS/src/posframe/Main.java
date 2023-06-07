@@ -10,11 +10,9 @@ import javax.swing.JScrollPane;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.GridLayout;
@@ -49,6 +47,7 @@ public class Main implements ActionListener, MouseListener {
 	ArrayList<cart> cartlist;
 	cart myCart;
 	private JPanel cartInner;
+	private JPanel p6;
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -242,7 +241,7 @@ public class Main implements ActionListener, MouseListener {
     }
 
     private void sp6() {
-        JPanel p6 = new JPanel();
+        p6 = new JPanel();
         p6.setBackground(Color.WHITE);
         p6.setBounds(0, 650, 1200, 300);
         mp1.add(p6);
@@ -285,6 +284,7 @@ public class Main implements ActionListener, MouseListener {
         p6.add(pc); 
     }
     
+	
 	private JButton createButton(String imagePath) {
         JButton button = new JButton();
         button.setBorder(BorderFactory.createLineBorder(new Color(217, 217, 217)));
@@ -385,5 +385,14 @@ public class Main implements ActionListener, MouseListener {
 	public void setCartInner(JPanel cartInner) {
 		this.cartInner = cartInner;
 	}
+	
+	public JPanel getP6() {
+		return p6;
+	}
+
+	public void setP6(JPanel p6) {
+		this.p6 = p6;
+	}
+
 
 }
