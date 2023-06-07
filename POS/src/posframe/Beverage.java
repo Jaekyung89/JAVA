@@ -21,9 +21,12 @@ import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Beverage implements ActionListener {
-
+	
+	private Map<String, JLabel> countLabels = new HashMap<>();
 	private JFrame beverageframe;
 	private JPanel BeveragePanel;
 	private Main PosMain;
@@ -33,7 +36,7 @@ public class Beverage implements ActionListener {
 	private JPanel Beveragemp1;
 	dataBase DB = new dataBase();
 	ResultSet rs;
-	private ArrayList<cart> list = new ArrayList<>();
+	private JPanel p6;
 	
 	public Beverage(Main PosMain) {
 		beverageframe = new JFrame();
@@ -220,7 +223,7 @@ public class Beverage implements ActionListener {
     }
 
     private void sp6() {
-    	JPanel p6 = PosMain.getP6();
+    	p6 = new JPanel();
         p6.setBackground(Color.WHITE);
         p6.setBounds(0, 650, 1200, 300);
         Beveragemp1.add(p6);
@@ -250,6 +253,7 @@ public class Beverage implements ActionListener {
 
         JLabel nameLabel = new JLabel(item.getName());  // 아이템 이름 라벨
         JLabel countLabel = new JLabel("개수: " + item.getNum());  // 아이템의 눌린 수 라벨
+        countLabels.put(item.getName(), countLabel);
 
         panel.add(nameLabel, BorderLayout.CENTER);
         panel.add(countLabel, BorderLayout.SOUTH);
@@ -279,31 +283,32 @@ public class Beverage implements ActionListener {
 			PosMain.getMp1().setVisible(true);
 		}
 		for (int i = 0; i < bvgbtn.length; i++) {
-		    if (obj == bvgbtn[i]) {
-		        String name = ((JButton) obj).getActionCommand();
-		        cart item = new cart(name, 1);  // 버튼의 이름 얻기
-		        // 이름이 같은 항목이 이미 list에 있는지 검사합니다.
-		        int index = item.search(list, item.getName());
-		        if (index != -1) {
-		            // 이름이 같은 항목이 이미 있으면, 그 항목의 수량을 증가시킵니다.
-		            item.add_item(list, index);
-		        } else {
-		            // 그렇지 않으면, 새 항목을 list에 추가합니다.
-		            list.add(item);
-		        }
+	        if (obj == bvgbtn[i]) {
+	            String name = ((JButton) obj).getActionCommand();  // 버튼의 이름 얻기
 
-		        // cartInner 패널 초기화
-		        PosMain.getCartInner().removeAll();
-		        // list의 아이템들을 이용하여 패널을 생성하고, 이를 cartInner에 추가
-		        for (cart itemInfo : list) {
-		            JPanel panel = createCart(itemInfo); // 각 아이템의 정보를 가진 패널 생성
-		            PosMain.getCartInner().add(panel); // 생성한 패널을 cartInner에 추가
-		        }
-		        PosMain.getCartInner().revalidate(); // UI를 갱신하여 새로 추가된 패널들이 보이게 합니다.
-		        PosMain.getCartInner().repaint();
-		        break;
-		    }
-		}
+	            // 이름이 같은 항목이 이미 list에 있는지 검사합니다.
+	            int index = -1;
+	            for (int j = 0; j < PosMain.getCartlist().size(); j++) {
+	                if (PosMain.getCartlist().get(j).getName().equals(name)) {
+	                    index = j;
+	                    break;
+	                }
+	            }
 
+	            if (index != -1) {
+	                // 이름이 같은 항목이 이미 있으면, 그 항목의 수량을 증가시킵니다.
+	                PosMain.getCartlist().get(index).add_item(PosMain.getCartlist(), index);
+	                JLabel countLabel = countLabels.get(name);
+	                if (countLabel != null) {
+	                    countLabel.setText("개수: " + PosMain.getCartlist().get(index).getNum());
+	                }
+	            } else {
+	                // 그렇지 않으면, 새 항목을 list에 추가하고 패널을 만듭니다.
+	                cart item = new cart(name, 1);
+	                PosMain.getCartlist().add(item);
+	                addItemToCart(item);
+	            }
+	        }
+	    }
     }
 }

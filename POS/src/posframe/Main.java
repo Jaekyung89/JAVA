@@ -44,8 +44,9 @@ public class Main implements ActionListener, MouseListener {
 	private JLabel banner2;
 	private JButton purchase;
 	private JButton cancel;
-	ArrayList<cart> cartlist;
-	cart myCart;
+	private ArrayList<cart> cartlist = new ArrayList<>();
+	private cart myCart = new cart();
+
 	private JPanel cartInner;
 	private JPanel p6;
 	
@@ -63,7 +64,6 @@ public class Main implements ActionListener, MouseListener {
 	}
 	
 	public Main() {
-		cartlist = new ArrayList<cart>();
 		myCart = new cart();
 		Mainframe = new JFrame();
 		Mainframe.setBounds(0, 0, 1200, 950);
@@ -370,10 +370,6 @@ public class Main implements ActionListener, MouseListener {
 		return cartlist;
 	}
 
-	public void setCartlist(ArrayList<cart> cartlist) {
-		this.cartlist = cartlist;
-	}
-
 	public void setList(ArrayList<cart> list) {
 		this.cartlist = list;
 	}
@@ -394,5 +390,12 @@ public class Main implements ActionListener, MouseListener {
 		this.p6 = p6;
 	}
 
+	public cart getMyCart() {
+		return myCart;
+	}
+
+	public void setMyCart(cart myCart) {
+		this.myCart = myCart;
+	}
 
 }
