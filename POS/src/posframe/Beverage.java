@@ -280,8 +280,8 @@ public class Beverage implements ActionListener {
 		}
 		for (int i = 0; i < bvgbtn.length; i++) {
 		    if (obj == bvgbtn[i]) {
-		        String name = ((JButton) obj).getActionCommand();  // 버튼의 이름 얻기
-		        cart item = new cart(name, 1);
+		        String name = ((JButton) obj).getActionCommand();
+		        cart item = new cart(name, 1);  // 버튼의 이름 얻기
 		        // 이름이 같은 항목이 이미 list에 있는지 검사합니다.
 		        int index = item.search(list, item.getName());
 		        if (index != -1) {
