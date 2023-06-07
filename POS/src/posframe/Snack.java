@@ -42,7 +42,6 @@ public class Snack implements ActionListener {
 	private JPanel cartInner;
 	private JButton purchase;
 	private JButton cancel;
-	private pay Pay;
 	
 	public Snack(Main PosMain) {
 		
