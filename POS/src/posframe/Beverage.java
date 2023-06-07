@@ -6,7 +6,6 @@ import javax.swing.border.TitledBorder;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
 
@@ -276,13 +275,9 @@ public class Beverage implements ActionListener {
 		Object obj = e.getSource();
 		
 		if (obj == GoHome) {
-			Container parentContainer = BeveragePanel.getParent();
-	        if (parentContainer instanceof JPanel) {
-	            JPanel parentPanel = (JPanel) parentContainer;
-	            parentPanel.setVisible(true);
-	        }
-	        BeveragePanel.setVisible(false);
-	    }
+			BeveragePanel.setVisible(false);
+			PosMain.getMp1().setVisible(true);
+		}
 		for (int i = 0; i < bvgbtn.length; i++) {
 		    if (obj == bvgbtn[i]) {
 		        String name = ((JButton) obj).getActionCommand();
